@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Get a Quote
+{% endblock %}
+
+{% block main %}
+    <form action="/quote" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="ticker" placeholder="Ticker" type="text">
+            <input type = "submit" value = "Quote">
+        </div>
+    </form>
+
+    <h1>{{ticker}}</h1>
+    <h2>{{price}}</h2>
+{% endblock %}

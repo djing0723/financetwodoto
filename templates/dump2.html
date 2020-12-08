@@ -1,0 +1,346 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Positions
+{% endblock %}
+
+{% block main %}
+
+<head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+    // Load Page
+    var myVar;
+    function myFunction() {
+      myVar = setTimeout(showPage, 50);
+    }
+    function showPage() {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("indexDiv").style.display = "block";
+    }
+
+    // Load Page
+    $(function(){
+      $("#position_tracking tr").each(function(){
+        var col_val = $(this).find("td:eq(1)").text().split("%")[0];
+        console.log(col_val);
+        if (col_val > -.50 && col_val < .5){
+          $(this).addClass('okay');  //the selected class colors the row green//
+        } else if (col_val >= .5){
+          $(this).addClass('good');  //the selected class colors the row green//
+        }
+        else {
+          $(this).addClass('bad');
+        }
+      });
+    });
+  </script>
+</head>
+
+<body onload = "myFunction()">
+  <div id = "loader"></div>
+
+  <div id = "indexDiv" class ="animate-bottom" style = "display:none;">
+    <!-- Card -->
+    <div class="card card-info">
+      <h1 class ="topblock">Portfolio Summary</h1>
+      <h3>Updated as of {{time_to_display}} EST</h3>
+      <form action = "/" method = "POST">
+        <button type = "submit" name = "Update" value = "Update" class = "stock-input-button">Update Manually</button>
+        <br>
+      </form>
+
+      <!-- Table -->
+      <table class = "importanttable">
+        <thead>
+          <th>Portfolio Change</th>
+          <th>S&P 500 Change</th>
+          <th>NASDAQ Change</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{overall_pct}}</td>
+            <td>{{spy_pct_string}}</td>
+            <td>{{qqq_pct_string}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Table end -->
+
+      <!-- Table -->
+      <table class = "importanttable">
+        <thead>
+          <th>Equity</th>
+          <th>Cash</th>
+          <th>Total</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{user_equity}}</td>
+            <td>{{user_cash}}</td>
+            <td>{{total}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Table end -->
+    </div>
+    <!-- Card End -->
+
+    <!-- Card -->
+    <div class='card card-info'>
+      <div id = "PortfolioTracking">
+        <h2  style = "margin-top: 50px;">All Positions</h2>
+        <table class = "tableclass" id = "position_tracking">
+          <col id = "Ticker"/>
+          <col id = "Today_Change"/>
+          <col id = "Shares"/>
+          <col id = "Price"/>
+          <col id = "Cost"/>
+          <col id = "Total"/>
+          <col id = "Total_Change"/>
+          <col id = "Total_Return"/>
+          <thead>
+            <tr>
+            <th>Ticker</th>
+            <th>Today % Change</th>
+            <th>Shares</th>
+            <th>Price</th>
+            <th>Cost Basis</th>
+            <th>Total</th>
+            <th>Return (%)</th>
+            <th>Return (Total)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%for row in rows %}
+            <tr>
+                <td>
+                    <form action = "/stock" method = "POST">
+                    <div class = "stock-ticker">
+                        <button type = "submit" name = "stock-index" value = {{row.ticker}} class = "stock-input-button">{{row.ticker}}</button>
+                    </div>
+                    </form>
+                </td>
+                <td class = "pct_change">{{row.pctchange}}</td>
+                <td>{{row.quantity}}</td>
+                <td>{{row.price}}</td>
+                <td>{{row.CostBasis}}</td>
+                <td>{{row.total_usd}}</td>
+                <td>{{row.return}}</td>
+                <td>{{row.totalreturn_usd}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Card End -->
+    <!-- Card -->
+    <div class="card card-info">
+      <h2 style = "margin-top: 30px;">Breakdown by Stock</h2>
+      <div id="piechart_stocks" class = "index_piechart"></div>
+    </div>
+    <!-- Card End -->
+    <!-- Card -->
+    <div class="card card-info">
+      <h2 style = "margin-top: 30px;">Breakdown by Industry</h2>
+      <div id="piechart_industry" class = "index_piechart"></div>
+    </div>
+    <!-- Card End -->
+    <!-- Card -->
+    <div class="card card-info">
+      <h2 style = "margin-top: 30px;">Breakdown by Style</h2>
+      <div id="piechart_style" class="index_piechart"></div>
+    </div>
+    <!-- Card End-->
+    <!-- Card -->
+    <div class="card card-info">
+      <h2 style = "margin-top: 40px;">Previous Relevant Earnings</h2>
+      <h3>Hello! {{future_earnings.epsActual}}</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Date</th>
+            <th>Hour</th>
+            <th>Period</th>
+            <th>EPS Estimate</th>
+            <th>EPS Actual</th>
+            <th>EPS Beat</th>
+            <th>Revenue Estimate</th>
+            <th>Revenue Actual</th>
+            <th>Revenue Beat</th>
+          </tr>
+        </thead>
+      {%for prev in prev_earnings %}
+      <tr>
+        <td>
+        <form action = "/stock" method = "POST">
+          <div class = "stock-ticker">
+            <button type = "submit" name = "stock-index" value = {{prev.symbol}} class = "stock-input-button">{{prev.symbol}}</button>
+          </div>
+        </form></td>
+        <td>{{prev.date}}</td>
+        <td>{{prev.hour}}</td>
+        <td>Q{{prev.quarter}} {{prev.year}}</td>
+        <td>{{prev.epsEstimate}}</td>
+        <td>{{prev.epsActual}}</td>
+        <td>{{prev.epsBeat}}</td>
+        <td>{{prev.revenueEstimate}}</td>
+        <td>{{prev.revenueActual}}</td>
+        <td>{{prev.revenueBeat}}</td>
+      </tr>
+      {% endfor %}
+      </table>
+    </div>
+    <!-- Card End-->
+    <!-- Card -->
+    <div class="card card-info">
+      <h2 style = "margin-top: 40px;">Future Relevant Earnings</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Date</th>
+            <th>Hour</th>
+            <th>Period</th>
+            <th>EPS Estimate</th>
+            <th>Revenue Estimate</th>
+          </tr>
+        </thead>
+        {%for fut in future_earnings %}
+          <tr>
+          <td>
+            <form action = "/stock" method = "POST">
+              <div class = "stock-ticker">
+                <button type = "submit" name = "stock-index" value = {{fut.symbol}} class = "stock-input-button">{{fut.symbol}}</button>
+              </div>
+            </form>
+          </td>
+          <td>{{fut.date}}</td>
+          <td>{{fut.hour}}</td>
+          <td>Q{{fut.quarter}} {{fut.year}}</td>
+          <td>{{fut.epsEstimate}}</td>
+          <td>{{fut.revenueEstimate}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <!-- Card End-->
+  </div>
+
+  <script>
+    // Chart
+    google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        result = {{rows2|tojson}};
+
+        var dataVis = google.visualization.arrayToDataTable(result);
+
+        document.getElementById('piechart_stocks').innerHTML = dataVis;
+
+        var options =
+          {
+          title: 'Portfolio Breakdown by Holdings',
+          colors: ['#1cbec7', '#2013d6', '#790be0'],
+          pieHole: .4,
+          backgroundColor: 'transparent',
+          legendTextStyle: {color: 'white'},
+          legend: {position: 'labeled'},
+          pieSliceTextStyle: {
+          color: 'white',
+          fontSize:13
+          },
+          chartArea: {left: 0, top: 0, width: "100%", height: "100%"},
+          width: 800,
+          height: 500,
+          titleTextStyle: {color: 'white'},
+          sliceVisibilityThreshold: 0
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_stocks'));
+
+        chart.draw(dataVis, options);
+      }
+  </script>
+  <script>
+    // Chart
+    google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        result = {{rows3|tojson}};
+
+        var dataVis = google.visualization.arrayToDataTable(result);
+
+        document.getElementById('piechart_industry').innerHTML = dataVis;
+
+        var options =
+          {
+          title: 'Portfolio Breakdown By Industry',
+          colors: ['#1cbec7', '#2013d6', '#790be0'],
+          pieHole: .4,
+          backgroundColor: 'transparent',
+          legendTextStyle: {color: 'white'},
+          legend: {position: 'labeled'},
+          pieSliceTextStyle: {
+          color: 'white',
+          fontSize:13
+          },
+                    chartArea: {left: 0, top: 0, width: "100%", height: "100%"},
+          width: 800,
+          height: 500,
+          titleTextStyle: {color: 'white'},
+          sliceVisibilityThreshold: 0
+        };
+
+
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_industry'));
+
+        chart.draw(dataVis, options);
+      }
+  </script>
+  <script>
+    google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        result = {{style_list|tojson}};
+
+        var dataVis = google.visualization.arrayToDataTable(result);
+
+        document.getElementById('piechart_style').innerHTML = dataVis;
+
+        var options =
+          {
+          title: 'Portfolio Breakdown By Style',
+          colors: ['#1cbec7', '#2013d6', '#790be0'],
+          pieHole: .4,
+          backgroundColor: 'transparent',
+          legendTextStyle: {color: 'white'},
+          legend: {position: 'labeled'},
+          pieSliceTextStyle: {
+          color: 'white',
+          fontSize:13
+          },
+                    chartArea: {left: 0, top: 0, width: "100%", height: "100%"},
+          width: 800,
+          height: 500,
+          titleTextStyle: {color: 'white'},
+          sliceVisibilityThreshold: 0
+        };
+
+
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_style'));
+
+        chart.draw(dataVis, options);
+      }
+  </script>
+</body>
+{% endblock %}

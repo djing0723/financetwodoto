@@ -1,0 +1,286 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Stock Search
+{% endblock %}
+
+{% block main %}
+    <!-- TradingView Widget BEGIN -->
+
+<script>
+var myVar;
+
+function myFunction() {
+  myVar = setTimeout(showPage, 50);
+}
+
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("indexDiv").style.display = "block";
+}
+</script>
+<body onload = "myFunction()" style = "width: 100%;">
+  <div id = "loader"></div>
+<div id = "indexDiv" class ="animate-bottom" style = "display:none;">
+      <div class = "stockheader">
+      <h1 class = "topblock">Search for a stock</h1>
+      </div>
+    <form action="/stock" method="post" type = "submit" value = "Submit">
+        <div class="form-group">
+            <input autocomplete="off" class="search-ticker" name = "stock-index" placeholder = "Search Ticker..." type = "text" >
+        </div>
+          <input autocomplete="off" type = "submit" value = "Submit" style = "margin-bottom: 20px;">
+
+      <!--<input type = "submit" value = "Submit" style = "margin-bottom: 20px;">-->
+    </form>
+
+    <div id = "hide" onload = "showhide()">
+    <div class = "stockheader">
+      <h1>{{ticker}} Summary</h1>
+    </div>
+
+    <a href = {{url}} target = "_blank">Visit their website </a>
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div id="tradingview_37559"></div>
+  <div class="tradingview-widget-copyright">
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+  <script type="text/javascript">
+  new TradingView.widget(
+  {
+  "container_id": "analytics-platform",
+  "width": 980,
+  "height": 610,
+  "symbol": "{{ticker}}",
+  "interval": "D",
+  "timezone": "Etc/UTC",
+  "theme": "dark",
+  "style": "1",
+  "locale": "en",
+  "details": "true",
+  "hotlist": "true",
+  "calendar": "true",
+  "toolbar_bg": "#f1f3f6",
+  "enable_publishing": false,
+  "hide_side_toolbar": false,
+  "allow_symbol_change": true,
+  "studies": [
+    "MAExp@tv-basicstudies"
+  ],
+  "container_id": "tradingview_37559"
+}
+  );
+  </script>
+</div>
+
+<!--Profile & Financials -->
+    {% if profile is not none %}
+        <div class="card card-info" style = "margin-top: 20px;">
+            <h3 class="card-title">Company Profile</h3>
+            <div class="row">
+                {% for key, val in profile.items() -%}
+                {% if key != "logo" %}
+                    <div class="col-md-3 test"><p class="item-key">{{ key }}:</p> {{ val }}</div>
+                {% endif %}
+            {% endfor %}
+            </div>
+        </div>
+
+        <!--High/Low Table-->
+        <div class="card card-info">
+            <h3 class="card-title">Financial Overview</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <div>
+                        <span class="item-key">Current Price</span>
+                        <span class="far-left">{{quote.c}}</span>
+                    </div>
+                    <div>
+                       <span class="item-key">Opening Price</span>
+                       <span class="far-left">{{quote.o}}</span>
+                    </div>
+                    <div>
+                        <span class="item-key">24hr High</span>
+                        <span class="far-left">{{quote.h}}</span>
+                    </div>
+                    <div>
+                        <span class="item-key">24hr Low</span>
+                        <span class="far-left">{{quote.l}}</span>
+                    </div>
+                    <div>
+                        <span class="item-key">Previous Close</span>
+                        <span class="far-left">{{quote.pc}}</span>
+                    </div>
+                    <div>
+                        <span class="item-key">52 Week High</span>
+                        <span class="far-left">{{financials.fiveTwoHigh}}</span>
+                    </div>
+                    <div>
+                        <span class="item-key">52 Week Low</span>
+                        <span class="far-left">{{financials.fiveTwoLow}}</span>
+                    </div>
+                    <div>
+                        <span class="item-key">10 Day AVG Vol</span>
+                        <span class="far-left">{{financials.tenDayAvgVol}}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div>
+                        <span class="item-key">Revenue Growth (TTM)</span>
+                        <span class="far-left">{% if financials.revenueGrowthTTMYoy is not none %}
+                                                {{financials.revenueGrowthTTMYoy|round(2)}}%
+                                                {% else %}
+                                                -
+                                                {% endif %}</span>
+                    </div>
+                    <div>
+                         <span class="item-key">3y Revenue Growth</span>
+                         <span class="far-left">{% if financials.revenueGrowth3Y is not none %}
+                                                {{financials.revenueGrowth3Y|round(2)}}%
+                                                {% else %}
+                                                -
+                                                {% endif %}<span>
+                    </div>
+                    <div>
+                        <span class="item-key">3y EPS Growth</span>
+                        <span class="far-left">{% if financials.epsGrowth3Y is not none %}
+                                                {{financials.epsGrowth3Y|round(2)}}%
+                                                {% else %}
+                                                -
+                                                {% endif %}</span>
+                    </div>
+                    <div>
+                        <span class="item-key">Annual Operating Margin</span>
+                        <span class="far-left">{% if financials.operatingMarginTTM is not none %}
+                                                {{financials.operatingMarginTTM|round(2)}}%
+                                                {% else %}
+                                                -
+                                                {% endif %}</span>
+                    </div>
+                    <div>
+                        <span class="item-key">Annual Net Profit Margin</span>
+                        <span class="far-left">{% if financials.netProfitMarginTTM is not none %}
+                                                {{financials.netProfitMarginTTM|round(2)}}%
+                                                {% else %}
+                                                -
+                                                {% endif %}</span>
+                    </div>
+                    <div>
+                        <span class="item-key">Annual ROI</span>
+                        <span class="far-left">{% if financials.roiAnnual is not none %}
+                                                {{financials.roiAnnual|round(2)}}%
+                                                {% else %}
+                                                -
+                                                {% endif %}</span>
+                    </div>
+                    <div>
+                        <span class="item-key">Beta</span>
+                        <span class="far-left">{{financials.beta}}<span>
+                    </div>
+
+                    <div>
+                        <span class="item-key">Debt to Equity</span>
+                        <span class="far-left">{% if financials.debtToEquity is not none %}
+                                                {{financials.debtToEquity|round(2)}}%
+                                                {% else %}
+                                                -
+                                                {% endif %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        {% endif %}
+        <!--Price target -->
+
+        {% if target_price is not none %}
+        <div class="card card-info">
+            <h3 class="card-title">Analyst Price Targets</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <div>
+                        <span class="item-key">Last Updated</span>
+                        <span class="far-left">{{target_price.lastUpdated}}<span>
+                    </div>
+                    <div>
+                        <span class="item-key">Symbol</span>
+                        <span class="far-left">{{target_price.symbol}}</span>
+                    </div>
+                    <div>
+                         <span class="item-key">Median of all Analysts' Targets</span>
+                         <span class="far-left">${{target_price.targetMedian}}<span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div>
+                        <span class="item-key">Lowest Analysts' Target</span>
+                        <span class="far-left">${{target_price.targetLow}}<span>
+                    </div>
+                    <div>
+                        <span class="item-key">Mean of Targets</span>
+                        <span class="far-left">${{target_price.targetMean}}<span>
+                    </div>
+                    <div>
+                        <span class="item-key">Highest Analsyts' Targets</span>
+                        <span class="far-left">${{target_price.targetHigh}}<span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        {% endif %}
+
+        {% if comps is not none %}
+        <div class="new">
+          <div class = "stockheader">
+            <h1 >{{ticker}} Comparables</h1>
+          </div>
+        <table id="comp-card" class = "tableclass">
+            <tbody>
+              {%for comp in comps %}
+                <td>
+                <form action = "/stock" method = "POST">
+                    <div class = "stock-ticker">
+                        <button type = "submit" name = "stock-index" value = {{comp}} class = "stock-input-button">{{comp}}</button>
+                    </div>
+                </td>
+                </form>
+              {% endfor %}
+            </tbody>
+        </table>
+        </div>
+       {% else %}
+       {% endif %}
+
+        {% if news is not none %}
+        <div id = "news">
+          <div class = "stockheader">
+            <h1 >News about {{ticker}}</h1>
+          </div>
+        <table class = "tableclass" style = "display: inline-block; border-style: none!important; overflow: auto; height: 500px; margin-top: 20px; width: 100%;">
+            <tbody class = "news-feed">
+              {%for new in news %}
+              <tr>
+                <td class = "news-feed" style = "padding-top: 20px">
+                  <h3>{{new.headline}}</h3>
+                  <h5>{{new.datetime}}</h5>
+                  <img src = {{new.image}} height = "100">
+                  <p>{{new.summary}}</p>
+                  <a href={{new.url}} target = "_blank">Read full article from {{new.source}}</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+        </div>
+        {% else %}
+        {% endif %}
+    <!--</div>-->
+
+<h6 style = "color: white; margin-top: 20px; font-size: 15px;">Read more at</h6>
+<a href = {{wsj_url_passin}} target = "_blank"><img src = "https://s.yimg.com/cv/apiv2/social/images/yahoo_default_logo.png" style = "height: 50px; width: 50px;"></a>
+<a href = {{sa_url_passin}} target = "_blank"><img src = "https://seekingalpha.com/samw/static/images/OrganizationLogo.7f745bcc.png" style = "height: 50px; width: 50px;"></a>
+<a href = {{ms_url_passin}} target = "_blank"><img src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_s7lRMuGnDybRtvqUglK5PqFyytUcoKXC0nTshAhj-hLKJWXiF3BLUvbb2wvmPxbu45JGZR-IHqD-8nAe6oDmrAUtOrB7iqnK_A&usqp=CAU&ec=45732300" style = "height: 50px; width: 50px;"></a>
+</body>
+<!-- TradingView Widget END -->
+{% endblock %}

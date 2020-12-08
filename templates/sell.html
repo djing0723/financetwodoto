@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Buy Something
+{% endblock %}
+
+{% block main %}
+
+    <form action="/sell" method="post">
+        <div class="form-group">
+            <select name = "ticker" id = "sell">
+                <option disabled selected value="">Stock</option>
+                {% for row in rows %}
+                    <option name = "stock" class = "stock" type = "checkbox" value = "{{ row["ticker"] }}"> {{ row["ticker"]}} </option>
+                {% endfor %}
+            </select>
+            <input name = "quantity" placeholder = "Quantity" type = "number" min = "1">
+        </div>
+        <input type = "submit" value = "Submit">
+    </form>
+
+
+    <h1>{{ticker}}</h1>
+    <h2>{{price}}</h2>
+{% endblock %}

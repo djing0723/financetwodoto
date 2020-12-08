@@ -1,0 +1,185 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Transaction History
+{% endblock %}
+
+{% block main %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        let x = document.querySelector("#showForm");
+        let button = document.querySelector("#showformbutton");
+        console.log("You made it here 1");
+        button.addEventListener("click", function() {
+            if (x.style.display === "block")
+            {
+                x.style.display = "none";
+            }
+            else {
+                x.style.display = "block";
+            }
+        });
+        let y = document.querySelector("#showFormWatchlist");
+        let watchlist_button = document.querySelector("#showformbuttonWatchlist");
+        console.log("You made it here 1");
+        watchlist_button.addEventListener("click", function() {
+            if (y.style.display === "block")
+            {
+                y.style.display = "none";
+            }
+            else {
+                y.style.display = "block";
+            }
+            console.log("you made it here");
+        });
+        let z = document.querySelector("#showFormDelWatchlist");
+        let watchlist_del_button = document.querySelector("#showformbuttonDelWatchlist");
+        console.log("You made it here 1");
+        watchlist_del_button.addEventListener("click", function() {
+            if (z.style.display === "block")
+            {
+                z.style.display = "none";
+            }
+            else {
+                z.style.display = "block";
+            }
+            console.log("you made it here");
+        });
+    });
+</script>
+
+<script>
+var myVar;
+
+function myFunction() {
+  myVar = setTimeout(showPage, 50);
+}
+
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("indexDiv").style.display = "block";
+}
+</script>
+<body>
+<body onload = "myFunction()" style = "width: 100%;">
+  <div id = "loader"></div>
+<div id = "indexDiv" class ="animate-bottom" style = "display:none;">
+<form action="/watchlist" method="post">
+    <div class = "topblock"></div>
+    <div class="form-group">
+        <select class="drop-down form-control form-control-lg" name = "watchlist" id = "watchlist" onchange="this.form.submit()">>
+                <option disabled selected value={{watchlist[0].watchlist_id}} class = "deselectedinput">Select Watchlist</option>
+                {%for watch in watchlists%}
+                <option name = "watchlists" class = "stock" type = "checkbox" value = {{watch.watchlist_id}}>{{watch.watchlist_name}}</coption>
+                {% endfor %}
+        </select>
+        <!--<input type = "submit" value = "Change Watchlist" style = "width: 50%; margin-top: 20px; height: 40px;">-->
+    </div>
+</form>
+
+<span class="badge badge-secondary">
+    <button id = "showformbuttonWatchlist" style = "background-color: transparent; border: none;">Add Watchlist</button>
+</span>
+<span class="badge badge-secondary">
+    <button id = "showformbuttonDelWatchlist" style = "background-color: transparent; border: none;">Delete Current Watchlist</button>
+</span>
+
+
+<div id = "showFormWatchlist" style = "display: none; margin-top: 20px;">
+    <form action="/addwatchlist" method="POST">
+        <input name = "watchlist" placeholder = "Add Watchlist" type = "text">
+    <input type = "submit" name = "Add Watchlist">
+    </form>
+</div>
+
+<div id = "showFormDelWatchlist" style = "display: none; margin-top: 20px;">
+    <form action="/delwatchlist" method="POST">
+    <input type = "submit" name = "Delete Watchlist">
+    <input type = "hidden" name = "watchlist_id" value = "{{watchlist[0].watchlist_id}}">
+    </form>
+</div>
+<br>
+
+<h style = "margin-top: 30px; font-size: 50px; border: none; font-weight: bold; color: white;">{{watchlist[0].watchlist_name}} Watchlist</h>
+
+
+<table class = "tableclass" class = "watchlisttable" style = "margin-top: 20px;">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Ticker</th>
+            <th>Chart</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {%for watch in watchlist%}
+        {% if watch.stock is not none %}
+        <tr>
+            <td>
+                <form action = "/delstockwatchlist" method = "POST">
+                    <button type = "submit" name = "stock" value = {{watch.stock}} class="stock-input-button">Delete</button>
+                    <input type = "hidden" name = "watchlist_id" value = {{watchlist[0].watchlist_id}}>
+                </form>
+            </td>
+            <td>
+                <form action = "/stock" method = "POST">
+                    <button type = "submit" name = "stock-index" value = {{watch.stock}} class = "stock-input-button">{{watch.stock}}</button>
+                </form>
+            </td>
+            <td class="to_overlay"><!-- TradingView Widget BEGIN -->
+            <form action = "/stock" method = "post">
+            <button type = "submit" style = "background-color: transparent; border: none;">
+            <container class = "overlay"></container>
+            <div class="tradingview-widget-container">
+              <div class="tradingview-widget-container__widget"></div>
+              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+              {
+              "symbol": "{{watch.stock}}",
+              "width": "600",
+              "height": "200",
+              "locale": "en",
+              "dateRange": "12M",
+              "colorTheme": "dark",
+              "trendLineColor": "rgba(0, 255, 255, 1)",
+              "underLineColor": "rgba(55, 166, 239, 0.15)",
+              "isTransparent": true,
+              "autosize": true,
+              "largeChartUrl": ""
+            }
+              </script>
+            </div>
+            <input type = "hidden" value = {{watch.stock}} name = "stock-index">
+            </button>
+            </form>
+<!-- TradingView Widget END --></td>
+        </tr>
+        {% else %}
+        {% endif %}
+        {% endfor %}
+
+        <tr>
+            <td>
+                <button id = "showformbutton" style = "background-color: transparent; border: none; color: white;">Add Stock</button>
+                <div id = "showForm" style = "display: none; margin-top: 20px;">
+                    <form action="/addstockwatchlist" method="post">
+                        <input name = "stock" placeholder = "Add Stock" type = "text">
+                        <input type = "hidden" name = "watchlist_id" value = "{{watchlist[0].watchlist_id}}">
+                        <input type = "submit" value = "Add Stock">
+                    </form>
+                </div>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+
+</div>
+</body>
+</body>
+{% endblock %}
+

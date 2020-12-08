@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Transaction History
+{% endblock %}
+
+{% block main %}
+
+<script>
+var myVar;
+
+function myFunction() {
+  myVar = setTimeout(showPage, 50);
+}
+
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("indexDiv").style.display = "block";
+}
+</script>
+
+<body onload = "myFunction()" style = "width: 100%;">
+  <div id = "loader"></div>
+<div id = "indexDiv" class ="animate-bottom" style = "display:none;">
+<form action="/tradelog" method="post" class="search-ticker">
+    <div class = "topblock"></div>
+    <div class="form-group">
+        <input name = "ticker" placeholder = "Ticker" type = "text">
+            <select id="buysell" class="drop-down form-control" name ="buysell">
+                <option disabled selected value="" class = "deselectedinput">Buy or Sell</option>
+                <option name = "buy" class = "stock" type = "checkbox" value = "buy">Buy</option>
+                <option name = "sell" class = "stock" type = "checkbox" value = "sell">Sell</option>
+            </select>
+        <input  name = "quantity" placeholder = "Quantity" type = "number" min = "0">
+        <input name = "cost" placeholder = "Cost Per Share" type = "number" step = ".001" min = "0">
+        <input  name = "cash" placeholder = "Cash Inflow/Outflow" type = "number" step = ".001">
+        <input  name = "style" placeholder = "Style" type = "text">
+    </div>
+    <input type = "submit" value = "Submit">
+</form>
+
+<table class = "tableclass" style = "margin-top: 50px;">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Date</th>
+            <th>Ticker</th>
+            <th>Shares</th>
+            <th>Price</th>
+            <th>Transaction</th>
+            <th>Style</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for row in rows %}
+        <tr>
+            <td>
+                <form action = "/edit" method = "post">
+                    <button type = "submit" name = "Edit" value = {{row.trade_id}} class = "stock-input-button">Edit</button>
+                </form>
+            </td>
+            <td>{{row.date}}</td>
+            <td>{{row.ticker}}</td>
+            <td>{{row.quantity}}</td>
+            <td>{{row.price}}</td>
+            <td>{{row.action}}</td>
+            <td>{{row.style}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+</body>
+
+
+{% endblock %}
+

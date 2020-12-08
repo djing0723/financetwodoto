@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Get a Quote
+{% endblock %}
+
+{% block main %}
+
+<script>
+var myVar;
+
+function myFunction() {
+  myVar = setTimeout(showPage, 50);
+}
+
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("indexDiv").style.display = "block";
+}
+</script>
+
+<body onload = "myFunction()" style = "width: 100%;">
+  <div id = "loader"></div>
+<div id = "indexDiv" class ="animate-bottom" style = "display:none;">
+
+    <!-- TradingView Widget BEGIN -->
+      <div  class = "topblock" class = "stockheader">
+      <h1>Search for a stock</h1>
+      </div>
+    <form action="/stock" method="post">
+        <div class="form-group">
+            <input name = "stock-index" placeholder = "Ticker" type = "text">
+        </div>
+      <input type = "submit" value = "Submit" style = "margin-bottom: 20px;">
+    </form>
+<!-- TradingView Widget END -->
+    </div>
+</div>
+</body>
+
+    <!-- TradingView Widget END -->
+{% endblock %}

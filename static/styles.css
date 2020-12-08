@@ -1,0 +1,480 @@
+nav .navbar-brand
+{
+    /* size for brand */
+    font-size: xx-large;
+}
+
+nav {
+    box-shadow: 0 3px 6px -2px rgba(0,0,0,.2);
+}
+
+body {
+    color: white;
+    background-color: #2e2e2e !important;
+}
+
+body a h6
+{
+    color: #52E3C1;
+    margin-top: 20px;
+}
+body p
+{
+    color: white;
+}
+
+body h1
+{
+    color: white;
+}
+
+body h2
+{
+    color: white;
+}
+
+body h3
+{
+    color: white;
+}
+
+body h5
+{
+    color: white;
+}
+
+#position_tracking th
+{
+    color: white;
+}
+
+.good {
+    color: #12ff9c;
+}
+
+.okay{
+  color:#FFFFFF;
+}
+
+.bad{
+  color:#eb1c26;
+}
+
+.nav
+{
+    color: black;
+}
+
+.nav-item.dropdown
+{
+    padding-right: 37px;
+}
+
+.dropdown-item {
+  text-align: center;
+  width: 180px;
+}
+
+.navbar-nav mr-auto mt-2 a:hover {
+    border-bottom: 3px solid red;
+}
+
+.nav-link
+{
+    font-family: 'JetBrains Mono', monospace;
+    /*padding-bottom: 13px;*/
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    border-bottom: 3px solid transparent;
+}
+
+.nav-link:hover {
+    border-bottom: 3px solid #52E3C1;
+}
+
+/* Colors for brand */
+nav .navbar-brand .finance
+{
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 5px 5px 5px 10px;
+}
+
+.topnav
+{
+    background-color: #1e1e1e;
+}
+
+nav .navbar-brand .yellow
+{
+    color: #f5b82e;
+}
+nav .navbar-brand .green
+{
+    color: #2e944b;
+}
+
+
+main .form-control
+{
+    /* Center form controls */
+    display: inline-block;
+
+    /* Override Bootstrap's 100% width for form controls */
+    width: auto;
+}
+
+main
+{
+    /* Scroll horizontally as needed */
+    overflow-x: auto;
+
+    /* Center contents */
+    text-align: center;
+
+    font-family: 'Avenir';
+}
+
+.topnav
+{
+    background-color: black;
+}
+
+main img
+{
+    /* Constrain images on small screens */
+    max-width: 100%;
+}
+
+table
+{
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse:separate;
+    border-spacing: 5px;
+    border: 8px solid #509cab;
+    border-radius: 20px;
+    -moz-border-radius:20px;
+}
+
+.tableclass
+{
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse:separate;
+    border-spacing: 5px;
+    border: 8px solid #509cab;
+    border-radius: 20px;
+    color: #fff;
+    -moz-border-radius:20px;
+}
+
+.tableclass p
+{
+    padding: 20px;
+}
+
+th
+{
+    padding-right: 30px;
+    text-align: center;
+}
+
+td
+{
+    padding-right: 30px;
+    text-align: center;
+    border: none !important}
+
+.tableinput
+{
+    height: 30px;
+    width: 70px;
+    font-size: 10px;
+    text-align: center;
+}
+
+.inputbutton
+{
+    height: 30px;
+    width: 70px;
+    padding: 0px;
+    font-size: 10px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.tableclass tr:nth-child(even)
+{ background:#2e2e2e;
+}
+
+.tableclass tr:nth-child(even) td
+{
+    outline: 5px solid #2e2e2e;;
+}
+
+
+tr
+{
+    height: 50px;
+}
+
+table
+{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+select
+{
+    height: 30px;
+}
+
+.stock-input-button
+{
+    background-color: transparent;
+    border: none;
+    color: #509cab;
+}
+
+.importanttable
+{
+    background-color: black;
+    color: white;
+    width: 50%;
+    border: 8px solid #509cab;
+}
+
+.deselectedinput
+{
+    color: grey;
+}
+
+.smallimage
+{
+    height: 50px;
+    width: 50px;
+}
+
+/* Search bar*/
+
+
+input
+{
+    border-radius: 15px;
+    padding: 5px 5px 5px 10px;
+    background: #383944;
+    border: none;
+    color: white;
+    width: 100%;
+    height: 40px;
+}
+
+.search-ticker input
+{
+    width: 100% !important;
+    border-radius: 15px;
+    padding: 10px 10px 10px 25px;
+    background: #383944;
+    margin-bottom: 15px !important;
+    border: none;
+    color: white;
+}
+
+.stockheader
+{
+    font-size: 75px;
+    border-style: solid;
+    border: 8px  #509cab;
+    color: white;
+}
+
+
+select {
+    border-radius: 15px;
+    background: #383944;
+    border: none;
+    color: white;
+}
+
+/* Card Styles */
+.card {
+    padding-top: 5px !important;
+}
+
+.card-info {
+    background: #393945 !important;
+    box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+    padding: 5%;
+    border-color: transparent;
+    color: white;
+    font-family: D-Din Exp,GT America,sans-serif;
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+#comp-card {
+    margin: 0 auto;
+    margin-bottom: 75px;
+}
+
+#ps-card-info {
+    margin: 0 auto;
+    margin-top: 60px;
+    margin-bottom: 50px;
+}
+
+.sm-card-info {
+    padding-top: .5px !important;
+    text-align: center;
+}
+
+.card-title
+{
+    color: #8f94a5;
+    /*text-align: left;*/
+    font-size: 25px;
+    margin-bottom: 30px;
+    font-weight: 300 !important;
+}
+
+hr {
+    margin: 10px;
+}
+
+
+.item-key
+{
+    color: #52E3C1;
+    margin-bottom: 0px !important;
+    font-weight: 800 !important;
+}
+
+.test {
+    margin-bottom: 15px;
+}
+
+
+.card {
+    font-size: 15px;
+}
+
+.far-left {
+    float: right;
+}
+
+.index_piechart
+{
+     width: 100%; height: 700; margin-top: 40px; margin-left: 10%; margin-right: auto;
+}
+
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #52E3C1;
+  border-radius: 50%;
+  border-top: 16px solid #509cab;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 }
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom {
+  from{ bottom:-100px; opacity:0 }
+  to{ bottom:0; opacity:1 }
+}
+
+#indexDiv {
+  display: none;
+  text-align: center;
+}
+
+.topblock
+{
+    margin-top: 60px;
+    color: white;
+}
+
+.to_overlay{
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10 !important;
+    background-color: transparent;
+}
+
+.news-feed {
+    background-color: #393945;
+    color: white;
+    box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+    margin: 10px auto;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tradingview-tape {
+    box-shadow: 0px -4px 6px rgba(0,0,0,.2);
+    width: 100%;
+    z-index: 9999;
+    position: fixed;
+    bottom: 0px;
+    height: 40px;
+}
+
+#showformbutton {
+    color: #fff;
+}
+
+/* Log */
+#buysell {
+    margin-bottom: 25px;
+}
+
+.drop-down {
+    background-color: #333333 !important;
+    color: #fff !important;
+}
